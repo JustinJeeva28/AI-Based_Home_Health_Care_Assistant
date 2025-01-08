@@ -1,0 +1,13 @@
+ollama
+chromadb
+psycopg
+speechrecognition
+pyttsx3
+twilio
+torch
+transformers
+flask
+requests
+numpy
+pandas
+scikit-learn

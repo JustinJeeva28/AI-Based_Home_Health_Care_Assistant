@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Health Assistant</title>
+    <link rel="stylesheet" href="./../static/styles.css">
+    <script src="./../static/scripts.js" defer></script>
+</head>
+<body>
+    <header>
+        <h1>Health Assistant</h1>
+        <nav>
+            <ul>
+                <li><a href="#chat">Chat</a></li>
+                <li><a href="#reminder">Set Reminder</a></li>
+                <li><a href="#reports">Reports</a></li>
+                <li><a href="#vitals">Vitals</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <section id="chat">
+            <h2>Chat with AI</h2>
+            <textarea id="userMessage" placeholder="Type your message here..."></textarea>
+            <button id="sendMessage">Send</button>
+            <div id="chatResponse"></div>
+        </section>
+
+        <section id="reminder">
+            <h2>Set Reminder</h2>
+            <form id="reminderForm">
+                <input type="text" id="task" placeholder="Task" required>
+                <input type="time" id="time" required>
+                <input type="number" id="duration" placeholder="Duration (days)" required>
+                <select id="mode" required>
+                    <option value="call">Call</option>
+                    <option value="text">Text</option>
+                </select>
+                <button type="submit">Set Reminder</button>
+            </form>
+            <div id="reminderStatus"></div>
+        </section>
+
+        <section id="reports">
+            <h2>Health Reports</h2>
+            <button id="loadReports">Load Reports</button>
+            <div id="reportsList"></div>
+        </section>
+
+        <section id="vitals">
+            <h2>Vitals</h2>
+            <button id="loadVitals">Load Vitals</button>
+            <div id="vitalsList"></div>
+        </section>
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Health Assistant. All rights reserved.</p>
+    </footer>
+
+    <script>
+        document.getElementById('loadReports').addEventListener('click', async () => {
+            const response = await fetch('/api/reports');
+            const reports = await response.json();
+            const reportsList = document.getElementById('reportsList');
+            
+            
+            // const newDiv = document.createElement('div');
+            // newDiv.classList.add('new-div');
+            // newDiv.textContent = 'This is a new div.';
+            // reportsList.appendChild(newDiv);
+
+
+            reportsList.innerHTML = reports.map(report => `<div>Report ID: ${report.id}, Timestamp: ${report.timestamp}, Report: ${report.report}</div>`).join('');
+            // reportsList.innerHTML = reports.map(report => `<div>${report.id}, ${report.timestamp}, ${report.report}</div>`).join('');
+            // const newdiv = `<tr><td>${report.id}</td><td>${report.timestamp}</td><td>${report.report}</td></tr>`
+            
+            reportsList.innerHTML = reports.map(report => `{newdiv}`).join('');
+        });
+
+        document.getElementById('loadVitals').addEventListener('click', async () => {
+            const response = await fetch('/api/vitals');
+            const vitals = await response.json();
+            const vitalsList = document.getElementById('vitalsList');
+            vitalsList.innerHTML = vitals.map(vital => `<div>Vital ID: ${vital.id}, Timestamp: ${vital.timestamp}, Heart Rate: ${vital.heart_rate}, Blood Oxygen Level: ${vital.blood_oxygen_level}, Temperature: ${vital.temperature}</div>`).join('');
+            // vitalsList.innerHTML = vitals.map(vital => `<div>${vital.id}, ${vital.timestamp}, ${vital.heart_rate}, ${vital.blood_oxygen_level}, ${vital.temperature}</div>`).join('');
+        });
+
+        document.getElementById('sendMessage').addEventListener('click', async () => {
+            const userMessage = document.getElementById('userMessage').value;
+            const response = await fetch('/chat', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ message: userMessage }),
+            });
+            const data = await response.json();
+            document.getElementById('chatResponse').innerText = data.assistant;
+        });
+    </script>
+</body>
+</html>
