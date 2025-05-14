@@ -54,3 +54,8 @@ An AI-powered home healthcare monitoring system that provides real-time health t
 - Frontend: HTML5, CSS3, JavaScript
 - Voice Processing: Speech Recognition
 - Emergency Notifications: Twilio
+
+## Demo Video
+
+[![Watch the demo](https://img.youtube.com/vi/qhHgBIoFeAU/0.jpg)](https://www.youtube.com/watch?v=qhHgBIoFeAU)
+
